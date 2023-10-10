@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-10T16:40:44.718Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="sdNrg7c7LO9lwe_8EPbP" version="21.7.5" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2023-10-10T16:41:22.463Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="CLzCUXpdO2DHR2OLqWpP" version="21.7.5" type="github" pages="4">
   <diagram name="On Demand Payment" id="Gg0yZXddBIerggFjbY7Z">
     <mxGraphModel dx="954" dy="525" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
       <root>
@@ -215,8 +215,8 @@
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="200" y="850" />
-              <mxPoint x="200" y="540" />
-              <mxPoint x="359" y="540" />
+              <mxPoint x="200" y="520" />
+              <mxPoint x="359" y="520" />
             </Array>
           </mxGeometry>
         </mxCell>
