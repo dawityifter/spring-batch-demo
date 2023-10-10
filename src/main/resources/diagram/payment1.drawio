@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-10T16:41:58.172Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="1faXuqZ_b9P8AhxDw6Gh" version="21.7.5" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2023-10-10T16:48:15.503Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="VJ0JmI6R5_CFC9da49jw" version="21.7.5" type="github" pages="4">
   <diagram name="On Demand Payment" id="Gg0yZXddBIerggFjbY7Z">
     <mxGraphModel dx="954" dy="525" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
       <root>
@@ -167,20 +167,26 @@
             <mxGeometry y="2" width="78" height="78" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="vrMQ9kJ271UdOdApstrC-6" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn4.iconfinder.com/data/icons/3d_icons/128/lock.png" parent="vrMQ9kJ271UdOdApstrC-7" vertex="1">
-          <mxGeometry x="55" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="vrMQ9kJ271UdOdApstrC-8" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="362" y="770" width="88" height="78" as="geometry" />
-        </mxCell>
+        <UserObject label="" tooltip="Private Topic" id="vrMQ9kJ271UdOdApstrC-6">
+          <mxCell style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn4.iconfinder.com/data/icons/3d_icons/128/lock.png" parent="vrMQ9kJ271UdOdApstrC-7" vertex="1">
+            <mxGeometry x="55" width="30" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" tooltip="Private Topic" id="vrMQ9kJ271UdOdApstrC-8">
+          <mxCell style="group" parent="1" vertex="1" connectable="0">
+            <mxGeometry x="362" y="770" width="88" height="78" as="geometry" />
+          </mxCell>
+        </UserObject>
         <UserObject label="" tooltip="pvt-payments-billpay-notifications" id="44tqqqxePrqwcwKDG7mr-34">
           <mxCell style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#945DF2;gradientDirection=north;fillColor=#5A30B5;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.managed_streaming_for_kafka;" parent="vrMQ9kJ271UdOdApstrC-8" vertex="1">
             <mxGeometry width="78" height="78" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="vrMQ9kJ271UdOdApstrC-4" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn4.iconfinder.com/data/icons/3d_icons/128/lock.png" parent="vrMQ9kJ271UdOdApstrC-8" vertex="1">
-          <mxGeometry x="58" width="30" height="30" as="geometry" />
-        </mxCell>
+        <UserObject label="" tooltip="Private Topic" id="vrMQ9kJ271UdOdApstrC-4">
+          <mxCell style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn4.iconfinder.com/data/icons/3d_icons/128/lock.png" parent="vrMQ9kJ271UdOdApstrC-8" vertex="1">
+            <mxGeometry x="58" width="30" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
         <mxCell id="vrMQ9kJ271UdOdApstrC-9" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="50" y="940" width="770" height="90" as="geometry" />
         </mxCell>
@@ -257,12 +263,16 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ct0ioZtUdSrJArQSkdF0-4" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#8C4FFF;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;recursiveResize=0;metaEdit=1;fixedWidth=1;resizeHeight=1;" vertex="1" parent="1">
-          <mxGeometry x="770" y="550" width="11.52" height="180" as="geometry" />
-        </mxCell>
-        <mxCell id="Ct0ioZtUdSrJArQSkdF0-5" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#E7157B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;resizeHeight=1;" vertex="1" parent="1">
-          <mxGeometry x="770" y="210" width="11.52" height="180" as="geometry" />
-        </mxCell>
+        <UserObject label="" tooltip="IB2B Gateway Configured with MTLS" id="Ct0ioZtUdSrJArQSkdF0-4">
+          <mxCell style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#8C4FFF;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;recursiveResize=0;metaEdit=1;fixedWidth=1;resizeHeight=1;" vertex="1" parent="1">
+            <mxGeometry x="770" y="550" width="11.52" height="180" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" tooltip="B2B Gateway" id="Ct0ioZtUdSrJArQSkdF0-5">
+          <mxCell style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#E7157B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;resizeHeight=1;" vertex="1" parent="1">
+            <mxGeometry x="770" y="210" width="11.52" height="180" as="geometry" />
+          </mxCell>
+        </UserObject>
       </root>
     </mxGraphModel>
   </diagram>
