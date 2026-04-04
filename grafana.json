@@ -1,518 +1,461 @@
 {
-  "__inputs": [
+  "title": "Payments Processing — Outcomes by Processing Code",
+  "description": "Success and failure rates, counts, and percentages for payments_processing_total broken down by processing_code and flow_type",
+  "layout_type": "free",
+  "reflow_type": "fixed",
+  "notify_list": [],
+  "template_variables": [
     {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
-      "description": "Prometheus datasource for payments metrics",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
+      "name": "processing_code",
+      "prefix": "processing_code",
+      "available_values": [],
+      "default": "*"
+    },
+    {
+      "name": "flow_type",
+      "prefix": "flow_type",
+      "available_values": [],
+      "default": "*"
+    },
+    {
+      "name": "env",
+      "prefix": "env",
+      "available_values": [],
+      "default": "*"
     }
   ],
-  "__requires": [
+  "widgets": [
     {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    }
-  ],
-  "annotations": {
-    "list": []
-  },
-  "description": "Payment processing outcomes by processing_code — success/failure time series and totals",
-  "editable": true,
-  "fiscalYearStartMonth": 0,
-  "graphTooltip": 1,
-  "id": null,
-  "links": [],
-  "panels": [
-    {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
-      "id": 100,
-      "title": "📊 Time Series — Payment Outcomes by Processing Code",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "description": "Rate of successful payments per processing_code over time",
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "payments/sec",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 1 },
       "id": 1,
-      "options": {
-        "legend": {
-          "calcs": ["mean", "max", "lastNotNull"],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": { "mode": "multi", "sort": "desc" }
+      "definition": {
+        "type": "note",
+        "content": "## 📊 Time Series — Payment Outcomes by Processing Code",
+        "background_color": "blue",
+        "font_size": "18",
+        "text_align": "left",
+        "vertical_align": "center",
+        "show_tick": false,
+        "tick_pos": "50%",
+        "tick_edge": "left",
+        "has_padding": true
       },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (processing_code) (rate(payments_processing_total{outcome=\"success\"}[$__rate_interval]))",
-          "legendFormat": "{{processing_code}}",
-          "refId": "A"
-        }
-      ],
-      "title": "✅ Success Rate by Processing Code",
-      "type": "timeseries"
+      "layout": { "x": 0, "y": 0, "width": 12, "height": 1 }
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "description": "Rate of failed payments per processing_code over time",
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "payments/sec",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "red", "value": null }
-            ]
-          },
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 1 },
       "id": 2,
-      "options": {
-        "legend": {
-          "calcs": ["mean", "max", "lastNotNull"],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
+      "definition": {
+        "title": "✅ Success Rate by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "max", "value"],
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "alias": "{{processing_code}}",
+                "formula": "query1"
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_rate()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "green",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          }
+        ],
+        "yaxis": {
+          "include_zero": true,
+          "scale": "linear",
+          "label": "payments/sec"
         },
-        "tooltip": { "mode": "multi", "sort": "desc" }
+        "markers": []
       },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (processing_code) (rate(payments_processing_total{outcome=\"failure\"}[$__rate_interval]))",
-          "legendFormat": "{{processing_code}}",
-          "refId": "A"
-        }
-      ],
-      "title": "❌ Failure Rate by Processing Code",
-      "type": "timeseries"
+      "layout": { "x": 0, "y": 1, "width": 6, "height": 4 }
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "description": "Stacked success vs failure rate — all processing codes combined",
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "fixed" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "payments/sec",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "normal" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "unit": "reqps"
+      "id": 3,
+      "definition": {
+        "title": "❌ Failure Rate by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "max", "value"],
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "alias": "{{processing_code}}",
+                "formula": "query1"
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_rate()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "warm",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "line"
+          }
+        ],
+        "yaxis": {
+          "include_zero": true,
+          "scale": "linear",
+          "label": "payments/sec"
         },
-        "overrides": [
+        "markers": []
+      },
+      "layout": { "x": 6, "y": 1, "width": 6, "height": 4 }
+    },
+    {
+      "id": 4,
+      "definition": {
+        "title": "📈 Overall Success vs Failure Rate (Stacked)",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "horizontal",
+        "legend_columns": ["avg", "max", "value"],
+        "type": "timeseries",
+        "requests": [
           {
-            "matcher": { "id": "byName", "options": "success" },
-            "properties": [{ "id": "color", "value": { "fixedColor": "green", "mode": "fixed" } }]
+            "formulas": [{ "alias": "success", "formula": "query1" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env}.as_rate()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "green",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "area"
           },
           {
-            "matcher": { "id": "byName", "options": "failure" },
-            "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }]
+            "formulas": [{ "alias": "failure", "formula": "query1" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env}.as_rate()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "warm",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "area"
+          }
+        ],
+        "yaxis": {
+          "include_zero": true,
+          "scale": "linear",
+          "label": "payments/sec"
+        }
+      },
+      "layout": { "x": 0, "y": 5, "width": 12, "height": 4 }
+    },
+    {
+      "id": 5,
+      "definition": {
+        "type": "note",
+        "content": "## 🔢 Cumulative Counters — Total Count in Selected Time Window",
+        "background_color": "blue",
+        "font_size": "18",
+        "text_align": "left",
+        "vertical_align": "center",
+        "show_tick": false,
+        "tick_pos": "50%",
+        "tick_edge": "left",
+        "has_padding": true
+      },
+      "layout": { "x": 0, "y": 9, "width": 12, "height": 1 }
+    },
+    {
+      "id": 6,
+      "definition": {
+        "title": "✅ Total Successes by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "alias": "Total Successes",
+                "cell_display_mode": "bar",
+                "formula": "query1",
+                "limit": { "count": 10, "order": "desc" }
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar"
           }
         ]
       },
-      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 10 },
-      "id": 3,
-      "options": {
-        "legend": {
-          "calcs": ["mean", "max", "lastNotNull"],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": { "mode": "multi", "sort": "desc" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum(rate(payments_processing_total{outcome=\"success\"}[$__rate_interval]))",
-          "legendFormat": "success",
-          "refId": "A"
-        },
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum(rate(payments_processing_total{outcome=\"failure\"}[$__rate_interval]))",
-          "legendFormat": "failure",
-          "refId": "B"
-        }
-      ],
-      "title": "📈 Overall Success vs Failure Rate (Stacked)",
-      "type": "timeseries"
+      "layout": { "x": 0, "y": 10, "width": 4, "height": 3 }
     },
     {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 19 },
-      "id": 101,
-      "title": "🔢 Cumulative Counters — Total Since Last Restart",
-      "type": "row"
+      "id": 7,
+      "definition": {
+        "title": "❌ Total Failures by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "alias": "Total Failures",
+                "cell_display_mode": "bar",
+                "formula": "query1",
+                "limit": { "count": 10, "order": "desc" }
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar"
+          }
+        ]
+      },
+      "layout": { "x": 4, "y": 10, "width": 4, "height": 3 }
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "description": "Total successful payments per processing_code since service start",
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "thresholds" },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 100 },
-              { "color": "orange", "value": 1000 }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
+      "id": 8,
+      "definition": {
+        "title": "📊 Success Rate % by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "alias": "Success %",
+                "cell_display_mode": "bar",
+                "formula": "100 * query1 / (query1 + query2)",
+                "limit": { "count": 10, "order": "desc" },
+                "conditional_formats": [
+                  { "comparator": "<",  "value": 80,  "palette": "white_on_red"    },
+                  { "comparator": "<",  "value": 95,  "palette": "white_on_yellow" },
+                  { "comparator": ">=", "value": 95,  "palette": "white_on_green"  }
+                ]
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              },
+              {
+                "name": "query2",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar"
+          }
+        ]
       },
-      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 20 },
+      "layout": { "x": 8, "y": 10, "width": 4, "height": 3 }
+    },
+    {
+      "id": 9,
+      "definition": {
+        "type": "note",
+        "content": "## 🕐 Breakdown by Processing Code + Flow Type (onetime vs recurring)",
+        "background_color": "blue",
+        "font_size": "18",
+        "text_align": "left",
+        "vertical_align": "center",
+        "show_tick": false,
+        "tick_pos": "50%",
+        "tick_edge": "left",
+        "has_padding": true
+      },
+      "layout": { "x": 0, "y": 13, "width": 12, "height": 1 }
+    },
+    {
       "id": 10,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (processing_code) (payments_processing_total{outcome=\"success\"})",
-          "legendFormat": "{{processing_code}}",
-          "refId": "A",
-          "instant": true
+      "definition": {
+        "title": "✅ Success Count by Code + Flow Type",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["sum", "value"],
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "alias": "{{processing_code}} / {{flow_type}}", "formula": "query1" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code,flow_type}.as_count()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "green",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "bars"
+          }
+        ],
+        "yaxis": {
+          "include_zero": true,
+          "scale": "linear",
+          "label": "count"
         }
-      ],
-      "title": "✅ Total Successes by Processing Code",
-      "type": "stat"
+      },
+      "layout": { "x": 0, "y": 14, "width": 6, "height": 4 }
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "description": "Total failed payments per processing_code since service start",
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "thresholds" },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 5 },
-              { "color": "red", "value": 20 }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 20 },
       "id": 11,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (processing_code) (payments_processing_total{outcome=\"failure\"})",
-          "legendFormat": "{{processing_code}}",
-          "refId": "A",
-          "instant": true
+      "definition": {
+        "title": "❌ Failure Count by Code + Flow Type",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "legend_layout": "auto",
+        "legend_columns": ["sum", "value"],
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "alias": "{{processing_code}} / {{flow_type}}", "formula": "query1" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code,flow_type}.as_count()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": {
+              "palette": "warm",
+              "line_type": "solid",
+              "line_width": "normal"
+            },
+            "display_type": "bars"
+          }
+        ],
+        "yaxis": {
+          "include_zero": true,
+          "scale": "linear",
+          "label": "count"
         }
-      ],
-      "title": "❌ Total Failures by Processing Code",
-      "type": "stat"
+      },
+      "layout": { "x": 6, "y": 14, "width": 6, "height": 4 }
     },
     {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "description": "Success rate percentage per processing_code: success / (success + failure) * 100",
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "thresholds" },
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "red", "value": null },
-              { "color": "yellow", "value": 80 },
-              { "color": "green", "value": 95 }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 20 },
       "id": 12,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
+      "definition": {
+        "title": "🔎 Top List — Failures by Processing Code (Current Window)",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "toplist",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "formula": "query1",
+                "limit": { "count": 10, "order": "desc" }
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar",
+            "conditional_formats": [
+              { "comparator": ">",  "value": 20, "palette": "white_on_red"    },
+              { "comparator": ">",  "value": 5,  "palette": "white_on_yellow" },
+              { "comparator": "<=", "value": 5,  "palette": "white_on_green"  }
+            ]
+          }
+        ]
       },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "100 * sum by (processing_code) (payments_processing_total{outcome=\"success\"}) / sum by (processing_code) (payments_processing_total)",
-          "legendFormat": "{{processing_code}}",
-          "refId": "A",
-          "instant": true
-        }
-      ],
-      "title": "📊 Success Rate % by Processing Code",
-      "type": "stat"
+      "layout": { "x": 0, "y": 18, "width": 6, "height": 4 }
     },
     {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 26 },
-      "id": 102,
-      "title": "🕐 Windowed Counts — Increases Over Selected Time Range",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "description": "Number of successful payments in the dashboard time window, broken down by processing_code and flow_type",
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "count",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "bars",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "normal" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "unit": "short"
-        },
-        "overrides": []
+      "id": 13,
+      "definition": {
+        "title": "🔎 Top List — Successes by Processing Code (Current Window)",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "toplist",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "formula": "query1",
+                "limit": { "count": 10, "order": "desc" }
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar",
+            "conditional_formats": [
+              { "comparator": ">=", "value": 0, "palette": "white_on_green" }
+            ]
+          }
+        ]
       },
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 27 },
-      "id": 20,
-      "options": {
-        "legend": {
-          "calcs": ["sum"],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": { "mode": "multi", "sort": "desc" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (processing_code, flow_type) (increase(payments_processing_total{outcome=\"success\"}[$__rate_interval]))",
-          "legendFormat": "{{processing_code}} / {{flow_type}}",
-          "refId": "A"
-        }
-      ],
-      "title": "✅ Success Count (windowed) by Code + Flow Type",
-      "type": "timeseries"
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "description": "Number of failed payments in the dashboard time window, broken down by processing_code and flow_type",
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "count",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "bars",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "normal" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "red", "value": null }]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 27 },
-      "id": 21,
-      "options": {
-        "legend": {
-          "calcs": ["sum"],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": { "mode": "multi", "sort": "desc" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (processing_code, flow_type) (increase(payments_processing_total{outcome=\"failure\"}[$__rate_interval]))",
-          "legendFormat": "{{processing_code}} / {{flow_type}}",
-          "refId": "A"
-        }
-      ],
-      "title": "❌ Failure Count (windowed) by Code + Flow Type",
-      "type": "timeseries"
+      "layout": { "x": 6, "y": 18, "width": 6, "height": 4 }
     }
-  ],
-  "refresh": "30s",
-  "schemaVersion": 38,
-  "tags": ["payments", "billpay", "fiserv", "prometheus"],
-  "templating": {
-    "list": []
-  },
-  "time": { "from": "now-1h", "to": "now" },
-  "timepicker": {},
-  "timezone": "browser",
-  "title": "Payments Processing — Outcomes by Processing Code",
-  "uid": "payments-processing-outcomes",
-  "version": 1
+  ]
 }
