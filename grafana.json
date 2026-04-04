@@ -25,367 +25,288 @@
   ],
   "widgets": [
     {
-      "id": 1,
       "definition": {
-        "type": "group",
-        "title": "📊 Time Series — Payment Outcomes by Processing Code",
-        "layout_type": "ordered",
-        "widgets": [
+        "title": "✅ Success Rate by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "type": "timeseries",
+        "requests": [
           {
-            "id": 2,
-            "definition": {
-              "title": "✅ Success Rate by Processing Code",
-              "title_size": "16",
-              "title_align": "left",
-              "show_legend": true,
-              "legend_layout": "auto",
-              "legend_columns": ["avg", "max", "value"],
-              "type": "timeseries",
-              "requests": [
-                {
-                  "formulas": [{ "formula": "query1", "alias": "success rate" }],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_rate()"
-                    }
-                  ],
-                  "response_format": "timeseries",
-                  "style": {
-                    "palette": "green",
-                    "line_type": "solid",
-                    "line_width": "normal"
-                  },
-                  "display_type": "line"
-                }
-              ],
-              "yaxis": { "include_zero": true, "scale": "linear", "label": "payments/sec" }
-            },
-            "layout": { "width": 6, "height": 4 }
-          },
-          {
-            "id": 3,
-            "definition": {
-              "title": "❌ Failure Rate by Processing Code",
-              "title_size": "16",
-              "title_align": "left",
-              "show_legend": true,
-              "legend_layout": "auto",
-              "legend_columns": ["avg", "max", "value"],
-              "type": "timeseries",
-              "requests": [
-                {
-                  "formulas": [{ "formula": "query1", "alias": "failure rate" }],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_rate()"
-                    }
-                  ],
-                  "response_format": "timeseries",
-                  "style": {
-                    "palette": "warm",
-                    "line_type": "solid",
-                    "line_width": "normal"
-                  },
-                  "display_type": "line"
-                }
-              ],
-              "yaxis": { "include_zero": true, "scale": "linear", "label": "payments/sec" }
-            },
-            "layout": { "width": 6, "height": 4 }
-          },
-          {
-            "id": 4,
-            "definition": {
-              "title": "📈 Overall Success vs Failure Rate (Stacked)",
-              "title_size": "16",
-              "title_align": "left",
-              "show_legend": true,
-              "legend_layout": "horizontal",
-              "legend_columns": ["avg", "max", "value"],
-              "type": "timeseries",
-              "requests": [
-                {
-                  "formulas": [{ "formula": "query1", "alias": "success" }],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env}.as_rate()"
-                    }
-                  ],
-                  "response_format": "timeseries",
-                  "style": { "palette": "green", "line_type": "solid", "line_width": "normal" },
-                  "display_type": "area"
-                },
-                {
-                  "formulas": [{ "formula": "query1", "alias": "failure" }],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env}.as_rate()"
-                    }
-                  ],
-                  "response_format": "timeseries",
-                  "style": { "palette": "warm", "line_type": "solid", "line_width": "normal" },
-                  "display_type": "area"
-                }
-              ],
-              "yaxis": { "include_zero": true, "scale": "linear", "label": "payments/sec" }
-            },
-            "layout": { "width": 12, "height": 4 }
+            "formulas": [{ "formula": "query1", "alias": "success rate" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_rate()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": { "palette": "green", "line_type": "solid", "line_width": "normal" },
+            "display_type": "line"
           }
         ]
       }
     },
     {
-      "id": 5,
       "definition": {
-        "type": "group",
-        "title": "🔢 Cumulative Counters — Total Count in Selected Time Window",
-        "layout_type": "ordered",
-        "widgets": [
+        "title": "❌ Failure Rate by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "type": "timeseries",
+        "requests": [
           {
-            "id": 6,
-            "definition": {
-              "title": "✅ Total Successes by Processing Code",
-              "title_size": "16",
-              "title_align": "left",
-              "type": "query_table",
-              "requests": [
-                {
-                  "formulas": [
-                    {
-                      "alias": "Total Successes",
-                      "cell_display_mode": "bar",
-                      "formula": "query1",
-                      "limit": { "count": 10, "order": "desc" }
-                    }
-                  ],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
-                      "aggregator": "sum"
-                    }
-                  ],
-                  "response_format": "scalar"
-                }
-              ]
-            },
-            "layout": { "width": 4, "height": 3 }
-          },
-          {
-            "id": 7,
-            "definition": {
-              "title": "❌ Total Failures by Processing Code",
-              "title_size": "16",
-              "title_align": "left",
-              "type": "query_table",
-              "requests": [
-                {
-                  "formulas": [
-                    {
-                      "alias": "Total Failures",
-                      "cell_display_mode": "bar",
-                      "formula": "query1",
-                      "limit": { "count": 10, "order": "desc" }
-                    }
-                  ],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
-                      "aggregator": "sum"
-                    }
-                  ],
-                  "response_format": "scalar"
-                }
-              ]
-            },
-            "layout": { "width": 4, "height": 3 }
-          },
-          {
-            "id": 8,
-            "definition": {
-              "title": "📊 Success Rate % by Processing Code",
-              "title_size": "16",
-              "title_align": "left",
-              "type": "query_table",
-              "requests": [
-                {
-                  "formulas": [
-                    {
-                      "alias": "Success %",
-                      "cell_display_mode": "bar",
-                      "formula": "100 * query1 / (query1 + query2)",
-                      "limit": { "count": 10, "order": "desc" },
-                      "conditional_formats": [
-                        { "comparator": "<",  "value": 80, "palette": "white_on_red"    },
-                        { "comparator": "<",  "value": 95, "palette": "white_on_yellow" },
-                        { "comparator": ">=", "value": 95, "palette": "white_on_green"  }
-                      ]
-                    }
-                  ],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
-                      "aggregator": "sum"
-                    },
-                    {
-                      "name": "query2",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
-                      "aggregator": "sum"
-                    }
-                  ],
-                  "response_format": "scalar"
-                }
-              ]
-            },
-            "layout": { "width": 4, "height": 3 }
+            "formulas": [{ "formula": "query1", "alias": "failure rate" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_rate()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": { "palette": "warm", "line_type": "solid", "line_width": "normal" },
+            "display_type": "line"
           }
         ]
       }
     },
     {
-      "id": 9,
       "definition": {
-        "type": "group",
-        "title": "🕐 Breakdown by Processing Code + Flow Type (onetime vs recurring)",
-        "layout_type": "ordered",
-        "widgets": [
+        "title": "📈 Overall Success vs Failure Rate",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "type": "timeseries",
+        "requests": [
           {
-            "id": 10,
-            "definition": {
-              "title": "✅ Success Count by Code + Flow Type",
-              "title_size": "16",
-              "title_align": "left",
-              "show_legend": true,
-              "legend_layout": "auto",
-              "legend_columns": ["sum", "value"],
-              "type": "timeseries",
-              "requests": [
-                {
-                  "formulas": [{ "formula": "query1", "alias": "{{processing_code}} / {{flow_type}}" }],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code,flow_type}.as_count()"
-                    }
-                  ],
-                  "response_format": "timeseries",
-                  "style": { "palette": "green", "line_type": "solid", "line_width": "normal" },
-                  "display_type": "bars"
-                }
-              ],
-              "yaxis": { "include_zero": true, "scale": "linear", "label": "count" }
-            },
-            "layout": { "width": 6, "height": 4 }
+            "formulas": [{ "formula": "query1", "alias": "success" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env}.as_rate()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": { "palette": "green", "line_type": "solid", "line_width": "normal" },
+            "display_type": "area"
           },
           {
-            "id": 11,
-            "definition": {
-              "title": "❌ Failure Count by Code + Flow Type",
-              "title_size": "16",
-              "title_align": "left",
-              "show_legend": true,
-              "legend_layout": "auto",
-              "legend_columns": ["sum", "value"],
-              "type": "timeseries",
-              "requests": [
-                {
-                  "formulas": [{ "formula": "query1", "alias": "{{processing_code}} / {{flow_type}}" }],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code,flow_type}.as_count()"
-                    }
-                  ],
-                  "response_format": "timeseries",
-                  "style": { "palette": "warm", "line_type": "solid", "line_width": "normal" },
-                  "display_type": "bars"
-                }
-              ],
-              "yaxis": { "include_zero": true, "scale": "linear", "label": "count" }
-            },
-            "layout": { "width": 6, "height": 4 }
-          },
+            "formulas": [{ "formula": "query1", "alias": "failure" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env}.as_rate()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": { "palette": "warm", "line_type": "solid", "line_width": "normal" },
+            "display_type": "area"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "✅ Total Successes by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
           {
-            "id": 12,
-            "definition": {
-              "title": "🔎 Top Failures by Processing Code",
-              "title_size": "16",
-              "title_align": "left",
-              "type": "toplist",
-              "requests": [
-                {
-                  "formulas": [
-                    {
-                      "formula": "query1",
-                      "limit": { "count": 10, "order": "desc" }
-                    }
-                  ],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
-                      "aggregator": "sum"
-                    }
-                  ],
-                  "response_format": "scalar",
-                  "conditional_formats": [
-                    { "comparator": ">",  "value": 20, "palette": "white_on_red"    },
-                    { "comparator": ">",  "value": 5,  "palette": "white_on_yellow" },
-                    { "comparator": "<=", "value": 5,  "palette": "white_on_green"  }
-                  ]
-                }
-              ]
-            },
-            "layout": { "width": 6, "height": 4 }
-          },
+            "formulas": [
+              {
+                "alias": "Total Successes",
+                "cell_display_mode": "bar",
+                "formula": "query1",
+                "limit": { "count": 10, "order": "desc" }
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "❌ Total Failures by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
           {
-            "id": 13,
-            "definition": {
-              "title": "🔎 Top Successes by Processing Code",
-              "title_size": "16",
-              "title_align": "left",
-              "type": "toplist",
-              "requests": [
-                {
-                  "formulas": [
-                    {
-                      "formula": "query1",
-                      "limit": { "count": 10, "order": "desc" }
-                    }
-                  ],
-                  "queries": [
-                    {
-                      "name": "query1",
-                      "data_source": "metrics",
-                      "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
-                      "aggregator": "sum"
-                    }
-                  ],
-                  "response_format": "scalar",
-                  "conditional_formats": [
-                    { "comparator": ">=", "value": 0, "palette": "white_on_green" }
-                  ]
-                }
-              ]
-            },
-            "layout": { "width": 6, "height": 4 }
+            "formulas": [
+              {
+                "alias": "Total Failures",
+                "cell_display_mode": "bar",
+                "formula": "query1",
+                "limit": { "count": 10, "order": "desc" }
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "📊 Success Rate % by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "query_table",
+        "requests": [
+          {
+            "formulas": [
+              {
+                "alias": "Success %",
+                "cell_display_mode": "bar",
+                "formula": "100 * query1 / (query1 + query2)",
+                "limit": { "count": 10, "order": "desc" },
+                "conditional_formats": [
+                  { "comparator": "<",  "value": 80, "palette": "white_on_red"    },
+                  { "comparator": "<",  "value": 95, "palette": "white_on_yellow" },
+                  { "comparator": ">=", "value": 95, "palette": "white_on_green"  }
+                ]
+              }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              },
+              {
+                "name": "query2",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "✅ Success Count by Code + Flow Type (Bars)",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "formula": "query1", "alias": "{{processing_code}} / {{flow_type}}" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code,flow_type}.as_count()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": { "palette": "green", "line_type": "solid", "line_width": "normal" },
+            "display_type": "bars"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "❌ Failure Count by Code + Flow Type (Bars)",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": true,
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "formula": "query1", "alias": "{{processing_code}} / {{flow_type}}" }],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code,flow_type}.as_count()"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": { "palette": "warm", "line_type": "solid", "line_width": "normal" },
+            "display_type": "bars"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "🔎 Top Failures by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "toplist",
+        "requests": [
+          {
+            "formulas": [
+              { "formula": "query1", "limit": { "count": 10, "order": "desc" } }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:failure,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar",
+            "conditional_formats": [
+              { "comparator": ">",  "value": 20, "palette": "white_on_red"    },
+              { "comparator": ">",  "value": 5,  "palette": "white_on_yellow" },
+              { "comparator": "<=", "value": 5,  "palette": "white_on_green"  }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "🔎 Top Successes by Processing Code",
+        "title_size": "16",
+        "title_align": "left",
+        "type": "toplist",
+        "requests": [
+          {
+            "formulas": [
+              { "formula": "query1", "limit": { "count": 10, "order": "desc" } }
+            ],
+            "queries": [
+              {
+                "name": "query1",
+                "data_source": "metrics",
+                "query": "sum:payments_processing_total.count{outcome:success,$processing_code,$flow_type,$env} by {processing_code}.as_count()",
+                "aggregator": "sum"
+              }
+            ],
+            "response_format": "scalar",
+            "conditional_formats": [
+              { "comparator": ">=", "value": 0, "palette": "white_on_green" }
+            ]
           }
         ]
       }
