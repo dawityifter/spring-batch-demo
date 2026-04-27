@@ -3,7 +3,7 @@
     {
       "name": "DS_PROMETHEUS",
       "label": "Prometheus",
-      "description": "Prometheus datasource for billpay metrics",
+      "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
       "pluginName": "Prometheus"
@@ -14,43 +14,31 @@
     { "type": "datasource", "id": "prometheus", "name": "Prometheus", "version": "1.0.0" },
     { "type": "panel", "id": "timeseries", "name": "Time series", "version": "" },
     { "type": "panel", "id": "stat", "name": "Stat", "version": "" },
-    { "type": "panel", "id": "piechart", "name": "Pie chart", "version": "" },
-    { "type": "panel", "id": "table", "name": "Table", "version": "" },
-    { "type": "panel", "id": "barchart", "name": "Bar chart", "version": "" }
+    { "type": "panel", "id": "barchart", "name": "Bar chart", "version": "" },
+    { "type": "panel", "id": "table", "name": "Table", "version": "" }
   ],
-  "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "type": "dashboard"
-      }
-    ]
-  },
-  "description": "Monitors external_billpay_errors_total and downstream errors by error_code, exception_kind, and outcome",
+  "annotations": { "list": [] },
+  "description": "Bill Pay Error Monitoring — counts by error code and exception kind",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
   "links": [],
   "panels": [
+
     {
       "collapsed": false,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
       "id": 100,
-      "title": "📊 Summary",
+      "title": "Current Window — How bad is it?",
       "type": "row"
     },
+
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -59,76 +47,84 @@
               { "color": "red", "value": 200 }
             ]
           },
-          "unit": "short"
+          "unit": "none",
+          "noValue": "0",
+          "mappings": []
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 1 },
       "id": 1,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
-      "title": "Total Errors (All Time)",
+      "title": "Total Errors",
+      "description": "Total number of errors recorded in the selected time window.",
       "type": "stat",
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum(external_billpay_errors_total{application=\"$application\"})",
+          "expr": "sum(increase(external_billpay_errors_total{application=\"$application\"}[$__range]))",
           "legendFormat": "Total Errors",
-          "refId": "A"
+          "refId": "A",
+          "instant": true
         }
       ]
     },
+
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               { "color": "green", "value": null },
-              { "color": "yellow", "value": 10 },
-              { "color": "red", "value": 50 }
+              { "color": "yellow", "value": 20 },
+              { "color": "red", "value": 100 }
             ]
           },
-          "unit": "reqps"
+          "unit": "none",
+          "noValue": "0",
+          "mappings": []
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 1 },
       "id": 2,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
-      "title": "Error Rate (per sec)",
+      "title": "Client Errors",
+      "description": "Errors caused by invalid or unexpected input from callers (validation, business rule violations).",
       "type": "stat",
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum(rate(external_billpay_errors_total{application=\"$application\"}[$__rate_interval]))",
-          "legendFormat": "Error Rate",
-          "refId": "A"
+          "expr": "sum(increase(external_billpay_errors_total{application=\"$application\",outcome=\"client_error\"}[$__range]))",
+          "legendFormat": "Client Errors",
+          "refId": "A",
+          "instant": true
         }
       ]
     },
+
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -137,37 +133,41 @@
               { "color": "red", "value": 20 }
             ]
           },
-          "unit": "reqps"
+          "unit": "none",
+          "noValue": "0",
+          "mappings": []
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
+      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 1 },
       "id": 3,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
-      "title": "Server Errors Rate (per sec)",
+      "title": "🔴 Server Errors",
+      "description": "Errors caused by internal failures — these always need investigation.",
       "type": "stat",
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum(rate(external_billpay_errors_total{application=\"$application\",outcome=\"server_error\"}[$__rate_interval]))",
-          "legendFormat": "Server Error Rate",
-          "refId": "A"
+          "expr": "sum(increase(external_billpay_errors_total{application=\"$application\",outcome=\"server_error\"}[$__range]))",
+          "legendFormat": "Server Errors",
+          "refId": "A",
+          "instant": true
         }
       ]
     },
+
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -176,365 +176,260 @@
               { "color": "red", "value": 20 }
             ]
           },
-          "unit": "short"
+          "unit": "none",
+          "noValue": "0",
+          "mappings": []
         },
         "overrides": []
       },
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
+      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 1 },
       "id": 4,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
-      "title": "Downstream Errors (All Time)",
+      "title": "🔻 Downstream Errors",
+      "description": "Errors from calls made to external systems (e.g. payment processors). High counts may indicate a partner outage.",
       "type": "stat",
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum(external_billpay_downstream_errors_total{application=\"$application\"})",
+          "expr": "sum(increase(external_billpay_downstream_errors_total{application=\"$application\"}[$__range]))",
           "legendFormat": "Downstream Errors",
-          "refId": "A"
+          "refId": "A",
+          "instant": true
         }
       ]
     },
 
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 6 },
       "id": 101,
-      "title": "📈 Error Rate Trends",
+      "title": "Which errors are firing?",
       "type": "row"
     },
+
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "errors/sec",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 15,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
+            "lineWidth": 1,
+            "axisPlacement": "auto",
+            "axisColorMode": "text"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "unit": "reqps"
+          "unit": "none",
+          "noValue": "0",
+          "mappings": []
         },
         "overrides": []
       },
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 6 },
+      "gridPos": { "h": 10, "w": 13, "x": 0, "y": 7 },
       "id": 10,
       "options": {
-        "legend": { "calcs": ["sum", "lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "multi", "sort": "desc" }
+        "barRadius": 0.05,
+        "barWidth": 0.7,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "orientation": "horizontal",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "desc" },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
-      "title": "Error Rate by error_code",
-      "type": "timeseries",
+      "title": "Errors by Error Code",
+      "description": "Total error count per error code in the selected time window. Sorted highest to lowest.",
+      "type": "barchart",
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (error_code) (rate(external_billpay_errors_total{application=\"$application\",exception_kind=~\"$exception_kind\",outcome=~\"$outcome\"}[$__rate_interval]))",
+          "expr": "sort_desc(sum by (error_code) (increase(external_billpay_errors_total{application=\"$application\",exception_kind=~\"$exception_kind\",outcome=~\"$outcome\"}[$__range])))",
           "legendFormat": "{{error_code}}",
-          "refId": "A"
+          "refId": "A",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        { "id": "merge", "options": {} },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": { "Time": true, "__name__": true, "application": true, "job": true, "instance": true, "exception_kind": true, "outcome": true },
+            "renameByName": { "error_code": "Error Code", "Value": "Count" }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": { "fields": [{ "desc": true, "displayName": "Count" }] }
         }
       ]
     },
+
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "errors/sec",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 15,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
+            "lineWidth": 1,
+            "axisPlacement": "auto",
+            "axisColorMode": "text"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "unit": "reqps"
+          "unit": "none",
+          "noValue": "0",
+          "mappings": [
+            { "type": "value", "options": { "validation": { "text": "Validation", "index": 0 } } },
+            { "type": "value", "options": { "business_rule": { "text": "Business Rule", "index": 1 } } },
+            { "type": "value", "options": { "downstream_error": { "text": "Downstream Error", "index": 2 } } },
+            { "type": "value", "options": { "not_found": { "text": "Not Found", "index": 3 } } },
+            { "type": "value", "options": { "unexpected": { "text": "Unexpected", "index": 4 } } }
+          ]
         },
         "overrides": []
       },
-      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 6 },
+      "gridPos": { "h": 10, "w": 11, "x": 13, "y": 7 },
       "id": 11,
       "options": {
-        "legend": { "calcs": ["sum", "lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "multi", "sort": "desc" }
+        "barRadius": 0.05,
+        "barWidth": 0.6,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": false },
+        "orientation": "horizontal",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": { "mode": "single", "sort": "desc" },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
-      "title": "Error Rate by exception_kind",
-      "type": "timeseries",
+      "title": "Errors by Exception Kind",
+      "description": "validation = bad input. business_rule = policy violation. downstream_error = external partner failed. unexpected = needs dev investigation.",
+      "type": "barchart",
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (exception_kind) (rate(external_billpay_errors_total{application=\"$application\",error_code=~\"$error_code\",outcome=~\"$outcome\"}[$__rate_interval]))",
+          "expr": "sort_desc(sum by (exception_kind) (increase(external_billpay_errors_total{application=\"$application\",error_code=~\"$error_code\",outcome=~\"$outcome\"}[$__range])))",
           "legendFormat": "{{exception_kind}}",
-          "refId": "A"
+          "refId": "A",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        { "id": "merge", "options": {} },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": { "Time": true, "__name__": true, "application": true, "job": true, "instance": true, "error_code": true, "outcome": true },
+            "renameByName": { "exception_kind": "Exception Kind", "Value": "Count" }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": { "fields": [{ "desc": true, "displayName": "Count" }] }
         }
       ]
     },
 
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 15 },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 17 },
       "id": 102,
-      "title": "🥧 Distribution Breakdowns",
+      "title": "Is it getting better or worse?",
       "type": "row"
     },
+
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
-          "custom": { "hideFrom": { "legend": false, "tooltip": false, "viz": false } },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Error Count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 70,
+            "gradientMode": "none",
+            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 4,
+            "scaleDistribution": { "type": "linear" },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "normal" },
+            "thresholdsStyle": { "mode": "off" }
+          },
+          "unit": "none",
+          "noValue": "0",
           "mappings": [],
-          "unit": "short"
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 9, "w": 8, "x": 0, "y": 16 },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 18 },
       "id": 20,
       "options": {
-        "displayLabels": ["percent"],
-        "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true, "values": ["value", "percent"] },
-        "pieType": "pie",
-        "tooltip": { "mode": "single", "sort": "none" }
+        "legend": {
+          "calcs": ["sum"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": { "mode": "multi", "sort": "desc" }
       },
-      "title": "Error Distribution by error_code",
-      "type": "piechart",
+      "title": "Error Count Over Time — by Error Code",
+      "description": "Each bar shows how many errors occurred per interval. Stacked so you can see total volume and which codes are contributing most.",
+      "type": "timeseries",
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (error_code) (increase(external_billpay_errors_total{application=\"$application\",exception_kind=~\"$exception_kind\",outcome=~\"$outcome\"}[$__range]))",
+          "expr": "sum by (error_code) (increase(external_billpay_errors_total{application=\"$application\",exception_kind=~\"$exception_kind\",outcome=~\"$outcome\"}[$__interval]))",
           "legendFormat": "{{error_code}}",
-          "refId": "A",
-          "instant": true
-        }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "hideFrom": { "legend": false, "tooltip": false, "viz": false } },
-          "mappings": [],
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 9, "w": 8, "x": 8, "y": 16 },
-      "id": 21,
-      "options": {
-        "displayLabels": ["percent"],
-        "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true, "values": ["value", "percent"] },
-        "pieType": "donut",
-        "tooltip": { "mode": "single", "sort": "none" }
-      },
-      "title": "Error Distribution by exception_kind",
-      "type": "piechart",
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (exception_kind) (increase(external_billpay_errors_total{application=\"$application\",error_code=~\"$error_code\",outcome=~\"$outcome\"}[$__range]))",
-          "legendFormat": "{{exception_kind}}",
-          "refId": "A",
-          "instant": true
-        }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "hideFrom": { "legend": false, "tooltip": false, "viz": false } },
-          "mappings": [],
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 9, "w": 8, "x": 16, "y": 16 },
-      "id": 22,
-      "options": {
-        "displayLabels": ["percent"],
-        "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true, "values": ["value", "percent"] },
-        "pieType": "donut",
-        "tooltip": { "mode": "single", "sort": "none" }
-      },
-      "title": "Error Distribution by outcome",
-      "type": "piechart",
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (outcome) (increase(external_billpay_errors_total{application=\"$application\",error_code=~\"$error_code\",exception_kind=~\"$exception_kind\"}[$__range]))",
-          "legendFormat": "{{outcome}}",
-          "refId": "A",
-          "instant": true
+          "refId": "A"
         }
       ]
     },
 
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 25 },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 28 },
       "id": 103,
-      "title": "📋 Stacked Trends & Heatmap",
+      "title": "Full Detail — every error code × exception kind",
       "type": "row"
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "errors/sec",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 60,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "normal" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 26 },
-      "id": 30,
-      "options": {
-        "legend": { "calcs": ["sum"], "displayMode": "table", "placement": "right", "showLegend": true },
-        "tooltip": { "mode": "multi", "sort": "desc" }
-      },
-      "title": "Stacked Error Rate — by error_code",
-      "type": "timeseries",
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (error_code) (rate(external_billpay_errors_total{application=\"$application\",outcome=~\"$outcome\",exception_kind=~\"$exception_kind\"}[$__rate_interval]))",
-          "legendFormat": "{{error_code}}",
-          "refId": "A"
-        }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "errors/sec",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 60,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "normal" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 26 },
-      "id": 31,
-      "options": {
-        "legend": { "calcs": ["sum"], "displayMode": "table", "placement": "right", "showLegend": true },
-        "tooltip": { "mode": "multi", "sort": "desc" }
-      },
-      "title": "Stacked Error Rate — by exception_kind",
-      "type": "timeseries",
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (exception_kind) (rate(external_billpay_errors_total{application=\"$application\",error_code=~\"$error_code\",outcome=~\"$outcome\"}[$__rate_interval]))",
-          "legendFormat": "{{exception_kind}}",
-          "refId": "A"
-        }
-      ]
     },
 
-    {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 35 },
-      "id": 104,
-      "title": "🗃️ Full Error Breakdown Table",
-      "type": "row"
-    },
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
           "custom": {
-            "align": "auto",
+            "align": "left",
             "cellOptions": { "type": "auto" },
-            "inspect": false
+            "inspect": false,
+            "minWidth": 100
           },
           "mappings": [],
           "thresholds": {
@@ -544,54 +439,78 @@
               { "color": "yellow", "value": 10 },
               { "color": "red", "value": 100 }
             ]
-          }
+          },
+          "noValue": "0"
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "error_code" },
-            "properties": [{ "id": "custom.width", "value": 300 }]
-          },
-          {
-            "matcher": { "id": "byName", "options": "exception_kind" },
-            "properties": [{ "id": "custom.width", "value": 180 }]
-          },
-          {
-            "matcher": { "id": "byName", "options": "outcome" },
-            "properties": [{ "id": "custom.width", "value": 140 }]
-          },
-          {
-            "matcher": { "id": "byName", "options": "Value" },
+            "matcher": { "id": "byName", "options": "Error Code" },
             "properties": [
-              { "id": "displayName", "value": "Count" },
-              { "id": "custom.width", "value": 120 },
+              { "id": "custom.width", "value": 320 },
+              { "id": "custom.cellOptions", "value": { "type": "auto" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Exception Kind" },
+            "properties": [
+              { "id": "custom.width", "value": 200 },
               {
-                "id": "custom.cellOptions",
-                "value": { "type": "color-background", "mode": "gradient" }
+                "id": "mappings",
+                "value": [
+                  { "type": "value", "options": { "validation": { "text": "🔷 Validation", "index": 0 } } },
+                  { "type": "value", "options": { "business_rule": { "text": "📋 Business Rule", "index": 1 } } },
+                  { "type": "value", "options": { "downstream_error": { "text": "🔻 Downstream Error", "index": 2 } } },
+                  { "type": "value", "options": { "not_found": { "text": "🔍 Not Found", "index": 3 } } },
+                  { "type": "value", "options": { "unexpected": { "text": "🔴 Unexpected", "index": 4 } } }
+                ]
               }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Outcome" },
+            "properties": [
+              { "id": "custom.width", "value": 160 },
+              {
+                "id": "mappings",
+                "value": [
+                  { "type": "value", "options": { "client_error": { "text": "Client Error", "index": 0, "color": "orange" } } },
+                  { "type": "value", "options": { "server_error": { "text": "⚠️ Server Error", "index": 1, "color": "red" } } }
+                ]
+              },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Count" },
+            "properties": [
+              { "id": "custom.width", "value": 140 },
+              { "id": "custom.cellOptions", "value": { "type": "color-background", "mode": "gradient" } },
+              { "id": "custom.align", "value": "center" }
             ]
           }
         ]
       },
-      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 36 },
-      "id": 40,
+      "gridPos": { "h": 14, "w": 24, "x": 0, "y": 29 },
+      "id": 30,
       "options": {
-        "cellHeight": "sm",
+        "cellHeight": "md",
         "footer": {
           "countRows": false,
-          "enablePagination": false,
-          "fields": "",
+          "enablePagination": true,
+          "fields": ["Count"],
           "reducer": ["sum"],
           "show": true
         },
         "showHeader": true,
         "sortBy": [{ "desc": true, "displayName": "Count" }]
       },
-      "title": "All Errors — error_code × exception_kind × outcome",
+      "title": "Error Breakdown Table",
+      "description": "Every combination of error code, exception kind, and outcome. Sort any column. Use filters above to narrow down.",
       "type": "table",
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sort_desc(sum by (error_code, exception_kind, outcome) (increase(external_billpay_errors_total{application=\"$application\",error_code=~\"$error_code\",exception_kind=~\"$exception_kind\",outcome=~\"$outcome\"}[$__range])))",
+          "expr": "sum by (error_code, exception_kind, outcome) (increase(external_billpay_errors_total{application=\"$application\",error_code=~\"$error_code\",exception_kind=~\"$exception_kind\",outcome=~\"$outcome\"}[$__range]))",
           "legendFormat": "",
           "refId": "A",
           "instant": true,
@@ -611,121 +530,18 @@
               "Value": "Count"
             }
           }
-        }
-      ]
-    },
-
-    {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 48 },
-      "id": 105,
-      "title": "🔻 Downstream Errors",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "errors/sec",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 15,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "unit": "reqps"
         },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 49 },
-      "id": 50,
-      "options": {
-        "legend": { "calcs": ["sum", "lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "multi", "sort": "desc" }
-      },
-      "title": "Downstream Error Rate by service",
-      "type": "timeseries",
-      "targets": [
         {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (service) (rate(external_billpay_downstream_errors_total{application=\"$application\"}[$__rate_interval]))",
-          "legendFormat": "{{service}}",
-          "refId": "A"
-        }
-      ]
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "errors/sec",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 15,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "unit": "reqps"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 49 },
-      "id": 51,
-      "options": {
-        "legend": { "calcs": ["sum", "lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "multi", "sort": "desc" }
-      },
-      "title": "Downstream Error Rate by status_class",
-      "type": "timeseries",
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-          "expr": "sum by (status_class) (rate(external_billpay_downstream_errors_total{application=\"$application\"}[$__rate_interval]))",
-          "legendFormat": "{{status_class}}",
-          "refId": "A"
+          "id": "sortBy",
+          "options": { "fields": [{ "desc": true, "displayName": "Count" }] }
         }
       ]
     }
+
   ],
-  "refresh": "30s",
+  "refresh": "1m",
   "schemaVersion": 38,
-  "tags": ["billpay", "payments", "errors", "prometheus"],
+  "tags": ["billpay", "payments", "errors"],
   "templating": {
     "list": [
       {
@@ -797,7 +613,11 @@
         "label": "Outcome",
         "multi": true,
         "name": "outcome",
-        "options": [],
+        "options": [
+          { "selected": true, "text": "All", "value": "$__all" },
+          { "selected": false, "text": "client_error", "value": "client_error" },
+          { "selected": false, "text": "server_error", "value": "server_error" }
+        ],
         "query": {
           "query": "label_values(external_billpay_errors_total{application=\"$application\"}, outcome)",
           "refId": "StandardVariableQuery"
@@ -812,8 +632,8 @@
   "time": { "from": "now-3h", "to": "now" },
   "timepicker": {},
   "timezone": "browser",
-  "title": "External Billpay — Error Monitoring",
-  "uid": "ext-billpay-errors-v1",
+  "title": "Bill Pay — Error Monitor",
+  "uid": "ext-billpay-errors-v2",
   "version": 1,
   "weekStart": ""
 }
